@@ -208,9 +208,9 @@ export default function UsersPage() {
     }
   }
 
-  function getRoleInitial(role: string) {
-    return role.charAt(0).toUpperCase();
-  }
+  // function getRoleInitial(role: string) {
+  //   return role.charAt(0).toUpperCase();
+  // }
 
   // ==========================================
   // UI
