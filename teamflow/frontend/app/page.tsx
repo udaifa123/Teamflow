@@ -322,17 +322,17 @@ export default function HomePage() {
           </h2>
           <div className="mt-16 grid gap-8 md:grid-cols-3" style={{ perspective: "1400px" }}>
             <PhotoTiltCard
-              src="https://picsum.photos/seed/teamflow-eng/700/860"
+              src="https://i.pinimg.com/736x/90/e4/93/90e493d59d0c85335d06551a6d136c2b.jpg"
               tag="Engineering"
               caption="Sprints, dependencies, and code review — mapped to the same board."
             />
             <PhotoTiltCard
-              src="https://picsum.photos/seed/teamflow-design/700/860"
+              src="https://i.pinimg.com/736x/26/a5/50/26a5503fa91f4c1513c27e2198661263.jpg"
               tag="Design"
               caption="Reviews, feedback, and handoff, tracked without a separate tool."
             />
             <PhotoTiltCard
-              src="https://picsum.photos/seed/teamflow-ops/700/860"
+              src="https://i.pinimg.com/1200x/c9/c7/c0/c9c7c0fd405757877e79414216e66dc6.jpg"
               tag="Operations"
               caption="Every recurring process, structured once and run on repeat."
             />
@@ -908,11 +908,11 @@ function ShowcasePhoto3D() {
       >
         <div className="relative overflow-hidden rounded-[22px] border border-white/10 shadow-[0_50px_90px_-30px_rgba(19,23,42,0.55)]">
         <Image
-  src="https://picsum.photos/seed/teamflow-showcase/1100/900"
+  src="https://i.pinimg.com/736x/2a/05/2c/2a052c201080c1886779acc0e5dd4ec5.jpg"
   alt="TeamFlow running on a team's shared board"
   width={1100}
   height={900}
-  className="h-[420px] w-full object-cover"
+  className="h-[800px] w-700 object-cover"
 />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080B14]/70 via-transparent to-transparent" />
           <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
