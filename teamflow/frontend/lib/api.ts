@@ -1,6 +1,12 @@
+"use client";
+
+
 export const API_URL = "http://localhost:5000/api";
 
-async function refreshToken() {
+// ❌ cannot use router outside component directly
+// so we pass redirect function
+
+async function refreshToken(redirectToLogin: () => void) {
   const refreshToken = localStorage.getItem("refreshToken");
 
   const res = await fetch(`${API_URL}/auth/refresh`, {
@@ -11,18 +17,31 @@ async function refreshToken() {
     body: JSON.stringify({ refreshToken }),
   });
 
-  const data = await res.json();
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
+  }
 
-  if (res.ok) {
+  if (res.ok && data?.accessToken) {
     localStorage.setItem("token", data.accessToken);
     return data.accessToken;
   } else {
     localStorage.clear();
-    window.location.href = "/login";
+
+    // ✅ Next.js navigation
+    redirectToLogin();
+
+    throw new Error("Session expired");
   }
 }
 
-export async function apiFetch(endpoint: string, options?: RequestInit) {
+export async function apiFetch(
+  endpoint: string,
+  options: RequestInit = {},
+  redirectToLogin?: () => void
+) {
   let token = localStorage.getItem("token");
 
   let res = await fetch(`${API_URL}${endpoint}`, {
@@ -30,26 +49,36 @@ export async function apiFetch(endpoint: string, options?: RequestInit) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      ...(options.headers || {}),
     },
   });
 
-  // 🔥 auto refresh
-  if (res.status === 401) {
-    token = await refreshToken();
+  // 🔥 AUTO REFRESH
+  if (res.status === 401 && redirectToLogin) {
+    token = await refreshToken(redirectToLogin);
 
     res = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        ...(options.headers || {}),
       },
     });
   }
 
-  const data = await res.json();
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
+  }
 
   if (!res.ok) {
-    throw new Error(data.message);
+    console.error("API ERROR:", data);
+    throw new Error(
+      data?.message || `Request failed (${res.status})`
+    );
   }
 
   return data;

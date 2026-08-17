@@ -21,22 +21,25 @@ export default function ProjectsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  async function loadProjects() {
-    try {
-      setLoading(true);
-      const data = await apiFetch("/projects");
-      setProjects(data);
-    } catch (error) {
-      console.error(error);
-      setError("Failed to load projects");
-    } finally {
-      setLoading(false);
-    }
+ async function loadProjects() {
+  try {
+    const data = await apiFetch("/projects");
+    setProjects(data);
+  } catch (error) {
+    console.error(error);
+    setError("Failed to load projects");
+  } finally {
+    setLoading(false);
+  }
+}
+
+useEffect(() => {
+  async function init() {
+    await loadProjects();
   }
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
+  init();
+}, []);
 
   function handleChange(
     e: React.ChangeEvent<

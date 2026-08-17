@@ -57,44 +57,74 @@ export default function ProjectMembersPage() {
       setLoading(false);
     }
   }
+useEffect(() => {
+  let isMounted = true;
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function handleAddMember(
-    e: React.FormEvent<HTMLFormElement>
-  ) {
-    e.preventDefault();
-
-    if (!userId || !projectId) {
-      setError("Please select both user and project");
-      return;
-    }
-
+  async function fetchData() {
     try {
-      setAdding(true);
+      setLoading(true);
       setError("");
 
-      await apiFetch("/project-members", {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: Number(userId),
-          project_id: Number(projectId),
-        }),
-      });
+      const [memberData, userData, projectData] =
+        await Promise.all([
+          apiFetch("/project-members"),
+          apiFetch("/users"),
+          apiFetch("/projects"),
+        ]);
 
-      setUserId("");
-      setProjectId("");
+      if (!isMounted) return;
 
-      await loadData();
+      setMembers(memberData);
+      setUsers(userData);
+      setProjects(projectData);
     } catch (error) {
-      console.error("Add member error:", error);
-      setError("Failed to add project member");
+      console.error("Project members error:", error);
+      if (isMounted) setError("Failed to load project members");
     } finally {
-      setAdding(false);
+      if (isMounted) setLoading(false);
     }
   }
+
+  fetchData();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+async function handleAddMember(
+  e: React.FormEvent<HTMLFormElement>
+) {
+  e.preventDefault();
+
+  if (!userId || !projectId) {
+    setError("Please select both user and project");
+    return;
+  }
+
+  try {
+    setAdding(true);
+    setError("");
+
+    await apiFetch("/project-members", {
+      method: "POST",
+      body: JSON.stringify({
+        user_id: Number(userId),
+        project_id: Number(projectId),
+      }),
+    });
+
+    setUserId("");
+    setProjectId("");
+
+    await loadData();
+  } catch (error) {
+    console.error("Add member error:", error);
+    setError("Failed to add project member");
+  } finally {
+    setAdding(false);
+  }
+}
 
   async function removeMember(
     memberUserId: number,

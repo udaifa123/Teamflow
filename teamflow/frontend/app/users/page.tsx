@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import { apiFetch } from "@/lib/api";
 
 type User = {
@@ -30,31 +30,33 @@ export default function UsersPage() {
   // LOAD USERS
   // ==========================================
 
-  async function loadUsers() {
-    try {
-      setLoading(true);
-      setError("");
+async function loadUsers() {
+  try {
+    setLoading(true);
+    setError("");
 
-      const data = await apiFetch("/users");
+    const data = await apiFetch("/users");
+    setUsers(data);
+  } catch (error) {
+    console.error("Load users error:", error);
 
-      setUsers(data);
-    } catch (error) {
-      console.error("Load users error:", error);
-
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Failed to load users"
-      );
-    } finally {
-      setLoading(false);
-    }
+    setError(
+      error instanceof Error
+        ? error.message
+        : "Failed to load users"
+    );
+  } finally {
+    setLoading(false);
   }
+}
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
+useEffect(() => {
+  const fetchData = async () => {
+    await loadUsers();
+  };
 
+  fetchData();
+}, []);
   // ==========================================
   // CLEAR FORM
   // ==========================================
