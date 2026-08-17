@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import pool from "../config/db";
 
-// GET all tasks
-export const getTasks = async (
-  req: Request,
-  res: Response
-) => {
+/* =========================
+   GET TASKS (WITH FILTERS)
+========================= */
+export const getTasks = async (req: Request, res: Response) => {
   try {
-    const result = await pool.query(`
+    const { status, priority, project_id } = req.query;
+
+    let query = `
       SELECT
         t.id,
         t.project_id,
@@ -19,26 +20,42 @@ export const getTasks = async (
         t.due_date,
         t.created_at
       FROM tasks t
-      JOIN projects p
-        ON t.project_id = p.id
-      ORDER BY t.id ASC
-    `);
+      LEFT JOIN projects p ON t.project_id = p.id
+      WHERE 1=1
+    `;
+
+    const params: any[] = [];
+
+    if (status) {
+      params.push(status);
+      query += ` AND t.status = $${params.length}`;
+    }
+
+    if (priority) {
+      params.push(priority);
+      query += ` AND t.priority = $${params.length}`;
+    }
+
+    if (project_id) {
+      params.push(project_id);
+      query += ` AND t.project_id = $${params.length}`;
+    }
+
+    query += ` ORDER BY t.id ASC`;
+
+    const result = await pool.query(query, params);
 
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      message: "Failed to fetch tasks",
-    });
+    res.status(500).json({ message: "Failed to fetch tasks" });
   }
 };
 
-// GET task by ID
-export const getTaskById = async (
-  req: Request,
-  res: Response
-) => {
+/* =========================
+   GET TASK BY ID
+========================= */
+export const getTaskById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -55,34 +72,27 @@ export const getTaskById = async (
         t.due_date,
         t.created_at
       FROM tasks t
-      JOIN projects p
-        ON t.project_id = p.id
+      LEFT JOIN projects p ON t.project_id = p.id
       WHERE t.id = $1
       `,
       [id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Task not found",
-      });
+      return res.status(404).json({ message: "Task not found" });
     }
 
     res.status(200).json(result.rows[0]);
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      message: "Failed to fetch task",
-    });
+    res.status(500).json({ message: "Failed to fetch task" });
   }
 };
 
-// CREATE task
-export const createTask = async (
-  req: Request,
-  res: Response
-) => {
+/* =========================
+   CREATE TASK
+========================= */
+export const createTask = async (req: Request, res: Response) => {
   try {
     const {
       project_id,
@@ -104,7 +114,7 @@ export const createTask = async (
       INSERT INTO tasks
         (project_id, title, description, status, priority, due_date)
       VALUES
-        ($1, $2, $3, $4, $5, $6)
+        ($1,$2,$3,$4,$5,$6)
       RETURNING *
       `,
       [
@@ -120,18 +130,14 @@ export const createTask = async (
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      message: "Failed to create task",
-    });
+    res.status(500).json({ message: "Failed to create task" });
   }
 };
 
-// UPDATE task
-export const updateTask = async (
-  req: Request,
-  res: Response
-) => {
+/* =========================
+   UPDATE TASK
+========================= */
+export const updateTask = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -169,26 +175,20 @@ export const updateTask = async (
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Task not found",
-      });
+      return res.status(404).json({ message: "Task not found" });
     }
 
     res.status(200).json(result.rows[0]);
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      message: "Failed to update task",
-    });
+    res.status(500).json({ message: "Failed to update task" });
   }
 };
 
-// DELETE task
-export const deleteTask = async (
-  req: Request,
-  res: Response
-) => {
+/* =========================
+   DELETE TASK
+========================= */
+export const deleteTask = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -202,20 +202,14 @@ export const deleteTask = async (
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Task not found",
-      });
+      return res.status(404).json({ message: "Task not found" });
     }
 
     res.status(200).json({
       message: "Task deleted successfully",
-      task: result.rows[0],
     });
   } catch (error) {
     console.error(error);
-
-    res.status(500).json({
-      message: "Failed to delete task",
-    });
+    res.status(500).json({ message: "Failed to delete task" });
   }
 };
