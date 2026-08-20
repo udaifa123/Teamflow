@@ -66,9 +66,8 @@ export default function CommentsPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ==========================================
+
   // LOAD COMMENTS, TASKS AND USERS
-  // ==========================================
 
   async function loadData() {
     try {
@@ -103,9 +102,9 @@ export default function CommentsPage() {
     fetchData();
   }, []);
 
-  // ==========================================
+
+
   // CREATE COMMENT
-  // ==========================================
 
   async function handleCreateComment(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -145,9 +144,9 @@ export default function CommentsPage() {
     }
   }
 
-  // ==========================================
+
+
   // START EDIT
-  // ==========================================
 
   function startEdit(comment: Comment) {
     setEditingId(comment.id);
@@ -155,18 +154,18 @@ export default function CommentsPage() {
     setError("");
   }
 
-  // ==========================================
+
+
   // CANCEL EDIT
-  // ==========================================
 
   function cancelEdit() {
     setEditingId(null);
     setEditingText("");
   }
 
-  // ==========================================
+
+
   // UPDATE COMMENT
-  // ==========================================
 
   async function handleUpdateComment(id: number) {
     if (!editingText.trim()) {
@@ -201,9 +200,9 @@ export default function CommentsPage() {
     }
   }
 
-  // ==========================================
+
   // DELETE COMMENT
-  // ==========================================
+
 
   async function handleDeleteComment(id: number) {
     const confirmed = window.confirm(
@@ -227,9 +226,9 @@ export default function CommentsPage() {
     }
   }
 
-  // ==========================================
+ 
   // HELPERS
-  // ==========================================
+
 
   function getTaskTitle(taskId: number) {
     const task = tasks.find((item) => item.id === taskId);
@@ -262,16 +261,16 @@ export default function CommentsPage() {
     return name.charAt(0).toUpperCase();
   }
 
-  // ==========================================
+
   // UI
-  // ==========================================
+
 
   return (
     <main
       className={`${display.variable} ${body.variable} ${mono.variable} min-h-screen bg-[#F7F4EC] text-[#13172A]`}
       style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
     >
-      {/* ── Nav ─────────────────────────────────────────── */}
+      {/* ── Nav───── */}
       <header
         className={`fixed top-0 z-50 w-full transition-all duration-300 ${
           isScrolled
@@ -328,7 +327,7 @@ export default function CommentsPage() {
         </div>
       </header>
 
-      {/* ── Main Content ────────────────────────────────── */}
+      {/* ── Main Cont── */}
       <div className="pt-24 pb-12">
         <div className="mx-auto max-w-7xl px-6 sm:px-10">
           {/* HEADER */}
@@ -372,7 +371,7 @@ export default function CommentsPage() {
             </div>
           )}
 
-          {/* ── CREATE COMMENT ───────────────────────────── */}
+          {/* ── CREATE COMMENT ─────── */}
           <section className="mb-8 rounded-2xl border border-black/[0.07] bg-white p-8 shadow-[0_2px_10px_rgba(19,23,42,0.05)] transition-all hover:shadow-[0_20px_40px_-12px_rgba(201,162,39,0.15)]">
             <div className="mb-6">
               <h2
@@ -455,7 +454,7 @@ export default function CommentsPage() {
             </form>
           </section>
 
-          {/* ── COMMENTS LIST ────────────────────────────── */}
+          {/* ── COMMENTS LIST ──────── */}
           <section>
             <div className="mb-4 flex items-center justify-between">
               <h2
@@ -575,7 +574,7 @@ export default function CommentsPage() {
         </div>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────── */}
+      {/* ── Footer ─── */}
       <footer className="border-t border-black/[0.06] bg-[#F7F4EC]">
         <div className="mx-auto max-w-7xl px-6 py-8 sm:px-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -598,7 +597,7 @@ export default function CommentsPage() {
   );
 }
 
-/* ─── Components ──────────────────────────────────────── */
+/* ─── Components ──── */
 
 function IsoMark() {
   return (

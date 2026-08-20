@@ -69,7 +69,7 @@ export default function DashboardPage() {
       className={`${display.variable} ${body.variable} ${mono.variable} min-h-screen bg-[#F7F4EC] text-[#13172A]`}
       style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
     >
-      {/* ── Nav ─────────────────────────────────────────── */}
+      {/* ── Nav ────── */}
       <header
         className={`fixed top-0 z-50 w-full transition-all duration-300 ${
           isScrolled
@@ -122,7 +122,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* ── Main Content ────────────────────────────────── */}
+      {/* ── Main Content ─────────────────────── */}
       <div className="pt-24 pb-12">
         <div className="mx-auto max-w-7xl px-6 sm:px-10">
           {/* Header */}
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             </Link> */}
           </div>
 
-          {/* ── Stats ──────────────────────────────────────── */}
+          {/* ── Stats ───────────── */}
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title="Total Projects"
@@ -211,7 +211,7 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* ── Completion Ring ───────────────────────────── */}
+          {/* ── Completion Ring ──────── */}
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_2fr]">
             <div className="rounded-2xl border border-black/[0.07] bg-white p-8 shadow-[0_2px_10px_rgba(19,23,42,0.05)]">
               <div className="flex flex-col items-center text-center">
@@ -275,7 +275,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* ── Recent Activity ────────────────────────── */}
+            {/* ── Recent Activity ── */}
             <div className="rounded-2xl border border-black/[0.07] bg-white p-8 shadow-[0_2px_10px_rgba(19,23,42,0.05)]">
               <div className="flex items-center justify-between">
                 <h3
@@ -316,7 +316,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* ── Projects ──────────────────────────────────── */}
+          {/* ── Projects ────── */}
           <section className="mt-8 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_10px_rgba(19,23,42,0.05)]">
             <div className="flex flex-wrap items-center justify-between border-b border-black/[0.06] px-6 py-5">
               <div>
@@ -411,7 +411,7 @@ const projectTasks = tasks.filter(
         </div>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────── */}
+      {/* ── Footer ─────────── */}
       <footer className="border-t border-black/[0.06] bg-[#F7F4EC]">
         <div className="mx-auto max-w-7xl px-6 py-8 sm:px-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -434,7 +434,7 @@ const projectTasks = tasks.filter(
   );
 }
 
-/* ─── Components ──────────────────────────────────────── */
+/* ─── Components ─────────── */
 
 function IsoMark() {
   return (

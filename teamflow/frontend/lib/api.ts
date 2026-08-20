@@ -3,8 +3,7 @@
 
 export const API_URL = "http://localhost:5000/api";
 
-// ❌ cannot use router outside component directly
-// so we pass redirect function
+
 
 async function refreshToken(redirectToLogin: () => void) {
   const refreshToken = localStorage.getItem("refreshToken");
@@ -30,7 +29,7 @@ async function refreshToken(redirectToLogin: () => void) {
   } else {
     localStorage.clear();
 
-    // ✅ Next.js navigation
+
     redirectToLogin();
 
     throw new Error("Session expired");
@@ -53,7 +52,7 @@ export async function apiFetch(
     },
   });
 
-  // 🔥 AUTO REFRESH
+
   if (res.status === 401 && redirectToLogin) {
     token = await refreshToken(redirectToLogin);
 
