@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
-// import Navbar from "@/components/Navbar";
 
 export default function ClientLayout({
   children,
@@ -11,12 +10,14 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const hideSidebar = pathname === "/";
+  const hideSidebar =
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/register";
 
   return (
     <>
       {!hideSidebar && <Sidebar />}
-      {/* <Navbar /> */}
 
       <div className={hideSidebar ? "" : "ml-64 pt-16"}>
         {children}

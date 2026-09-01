@@ -84,13 +84,21 @@ export default function HomePage() {
             </nav>
           </div>
 
-          <Link
-            href="/dashboard"
-            className="group inline-flex items-center rounded-full bg-gradient-to-b from-[#E7C766] to-[#B5871F] px-6 py-2.5 text-[13.5px] font-semibold text-[#241A05] shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_10px_24px_-8px_rgba(201,162,39,0.65)] transition-all hover:shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_14px_30px_-6px_rgba(201,162,39,0.8)] hover:-translate-y-[1px]"
-          >
-            Get started
-            <span className="ml-1.5 inline-block transition-transform group-hover:translate-x-1">→</span>
-          </Link>
+         <div className="flex gap-3">
+  <Link
+    href="/login"
+    className="px-5 py-2 text-sm font-semibold text-[#13172A] border border-black/10 rounded-full hover:border-[#C9A227]"
+  >
+    Login
+  </Link>
+
+  <Link
+    href="/register"
+    className="px-5 py-2 text-sm font-semibold text-white bg-[#13172A] rounded-full hover:bg-[#000]"
+  >
+    Register
+  </Link>
+</div>
         </div>
       </header>
 
@@ -132,13 +140,13 @@ export default function HomePage() {
               </p>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <Link
-                  href="/dashboard"
-                  className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#E7C766] to-[#B5871F] px-8 py-4 text-[15px] font-semibold text-[#241A05] shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_16px_36px_-10px_rgba(201,162,39,0.75)] transition-all hover:-translate-y-[1px] hover:shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_20px_44px_-8px_rgba(201,162,39,0.9)]"
-                >
-                  Start building
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </Link>
+               <Link
+  href="/register"
+  className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#E7C766] to-[#B5871F] px-8 py-4 text-[15px] font-semibold text-[#241A05]"
+>
+  Start building
+  <span className="transition-transform group-hover:translate-x-1">→</span>
+</Link>
                 <Link
                   href="#features"
                   className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.03] px-8 py-4 text-[15px] font-medium text-white/85 backdrop-blur-md transition-all hover:border-white/25 hover:bg-white/[0.07]"

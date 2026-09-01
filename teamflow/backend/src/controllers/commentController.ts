@@ -26,7 +26,7 @@ export const getCommentById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const result = await pool.query(
-      `SELECT * FROM comments WHERE id = $1`,
+      `SELECT * FROM comments WHERE id = $1` ,
       [id]
     );
 
@@ -69,6 +69,7 @@ export const createComment = async (req: Request, res: Response) => {
     });
   }
 };
+
 // UPDATE comment
 export const updateComment = async (req: Request, res: Response) => {
   try {
@@ -100,6 +101,7 @@ export const updateComment = async (req: Request, res: Response) => {
     });
   }
 };
+
 // DELETE comment
 export const deleteComment = async (req: Request, res: Response) => {
   try {

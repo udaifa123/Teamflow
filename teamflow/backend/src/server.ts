@@ -7,7 +7,7 @@ import projectRoutes from "./routes/projectRoutes";
 import projectMemberRoutes from "./routes/projectMemberRoutes";
 import taskRoutes from "./routes/taskRoutes";
 import commentRoutes from "./routes/commentRoutes";
-// import authRoutes from "./routes/authRoutes";
+import authRoutes from "./routes/authRoutes";
 
 
 dotenv.config();
@@ -22,7 +22,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/project-members", projectMemberRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/comments", commentRoutes);
-// app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({

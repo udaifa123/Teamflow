@@ -1,34 +1,72 @@
-// import { Request, Response } from "express";
-// import pool from "../config/db";
+import { Request, Response } from "express";
+import pool from "../config/db"; 
+import bcrypt from "bcrypt";
+import { generateToken } from "../utils/jwt";
 
-// export const login = async (req: Request, res: Response) => {
-//   try {
-//     const { email, password } = req.body;
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { name, email, password } = req.body;
 
-//     const result = await pool.query(
-//       `
-//       SELECT *
-//       FROM users
-//       WHERE email = $1 AND password = $2
-//       `,
-//       [email, password]
-//     );
+    // ✅ check empty fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
 
-//     if (result.rows.length === 0) {
-//       return res.status(401).json({
-//         message: "Invalid email or password",
-//       });
-//     }
+    // ✅ check existing user
+    const existing = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
 
-//     res.status(200).json({
-//       message: "Login successful",
-//       user: result.rows[0],
-//     });
-//   } catch (error) {
-//     console.error("Error logging in:", error);
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-//     res.status(500).json({
-//       message: "Login failed",
-//     });
-//   }
-// };
+    // ✅ hash password
+    const hashed = await bcrypt.hash(password, 10);
+
+    // ✅ insert user
+    const result = await pool.query(
+      "INSERT INTO users (name, email, password_hash) VALUES ($1,$2,$3) RETURNING *",
+      [name, email, hashed]
+    );
+
+    res.status(201).json(result.rows[0]);
+
+  } catch (err) {
+    console.error("REGISTER ERROR:", err); // 🔥 check terminal
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
+
+    if (user.rows.length === 0) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const valid = await bcrypt.compare(
+      password,
+      user.rows[0].password_hash
+    );
+
+    if (!valid) {
+      return res.status(400).json({ message: "Wrong password" });
+    }
+
+    const token = generateToken(user.rows[0]);
+
+    res.json({ token });
+
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
