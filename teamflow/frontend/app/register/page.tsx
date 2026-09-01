@@ -11,61 +11,93 @@ export default function Register() {
 
   const router = useRouter();
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    const res = await fetch("http://localhost:5000/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
 
-    // check response before parsing
-    if (!res.ok) {
-      const text = await res.text(); // backend error (HTML)
-      console.error("Server error:", text);
-      alert("Registration failed");
-      return;
+      if (!res.ok) {
+        alert("Registration failed");
+        return;
+      }
+
+      alert("Registered Successfully");
+      router.push("/login");
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     }
-
-const data = await res.json();
-console.log("Response:", data);
-
-    alert("Registered Successfully");
-    router.push("/login");
-
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong");
-  }
-};
+  };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Register</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#080B14] relative overflow-hidden">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        /><br />
+      {/* 🔥 Background Glow */}
+      <div className="absolute top-[-100px] left-[-100px] w-[300px] h-[300px] bg-[#C9A227]/20 blur-[120px]" />
+      <div className="absolute bottom-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#5B8DEF]/20 blur-[120px]" />
 
-        <input
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        /><br />
+      {/* 🧊 Glass Card */}
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-xl p-8 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        /><br />
+        <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+          Create your account
+        </h2>
 
-        <button type="submit">Register</button>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          {/* Name */}
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="w-full px-4 py-3 rounded-lg bg-white/[0.06] border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C9A227]"
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+          />
+
+          {/* Email */}
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 rounded-lg bg-white/[0.06] border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C9A227]"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
+
+          {/* Password */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 rounded-lg bg-white/[0.06] border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#C9A227]"
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+          />
+
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-lg font-semibold text-[#241A05] bg-gradient-to-b from-[#E7C766] to-[#B5871F] hover:opacity-90 transition"
+          >
+            Register
+          </button>
+        </form>
+
+        {/* Login Link */}
+        <p className="text-sm text-white/50 text-center mt-6">
+          Already have an account?{" "}
+          <span
+            onClick={() => router.push("/login")}
+            className="text-[#C9A227] cursor-pointer hover:underline"
+          >
+            Login
+          </span>
+        </p>
+
+      </div>
     </div>
   );
 }
