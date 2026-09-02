@@ -74,16 +74,16 @@ export const createComment = async (req: Request, res: Response) => {
 export const updateComment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { comment } = req.body;
+    const { message } = req.body;
 
     const result = await pool.query(
       `
       UPDATE comments
-      SET comment = $1
+      SET message = $1
       WHERE id = $2
       RETURNING *
       `,
-      [comment, id]
+      [message, id]
     );
 
     if (result.rows.length === 0) {
