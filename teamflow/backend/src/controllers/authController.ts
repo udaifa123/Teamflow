@@ -38,7 +38,6 @@ export const register = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -48,25 +47,31 @@ export const login = async (req: Request, res: Response) => {
       [email]
     );
 
+    // ✅ user check
     if (user.rows.length === 0) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    const valid = await bcrypt.compare(
-      password,
-      user.rows[0].password_hash
-    );
+    const dbUser = user.rows[0];
+
+    // ✅ prevent crash if column missing
+    if (!dbUser.password_hash) {
+      console.error("❌ password_hash missing:", dbUser);
+      return res.status(500).json({ message: "Invalid DB data" });
+    }
+
+    const valid = await bcrypt.compare(password, dbUser.password_hash);
 
     if (!valid) {
       return res.status(400).json({ message: "Wrong password" });
     }
 
-    const token = generateToken(user.rows[0]);
+    const token = generateToken(dbUser);
 
     res.json({ token });
 
   } catch (err) {
-    console.error("LOGIN ERROR:", err);
+    console.error("LOGIN ERROR FULL:", err); // 🔥 IMPORTANT
     res.status(500).json({ message: "Server error" });
   }
 };
