@@ -1,9 +1,7 @@
 "use client";
 
 
-export const API_URL = "http://localhost:5000/api";
-
-
+export const API_URL = "https://teamflow1.duckdns.org/api";
 
 async function refreshToken(redirectToLogin: () => void) {
   const refreshToken = localStorage.getItem("refreshToken");

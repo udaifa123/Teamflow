@@ -10,8 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - teamflow_pgdata:/var/lib/postgresql/data   # ✅ OLD DATA
-      # ❌ REMOVE init.sql
+      - teamflow_pgdata:/var/lib/postgresql/data
 
   backend:
     build: ./backend
@@ -19,16 +18,22 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: host.docker.internal
+      DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: udaifaudhu9483
+      DB_PASSWORD: password
       DB_NAME: teamflow
     depends_on:
       - db
 
+  # ✅ FIXED (inside services)
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://43.204.216.67:5000/api
+    environment:
+      NEXT_PUBLIC_API_URL: http://43.204.216.67:5000/api
     container_name: teamflow_frontend
     ports:
       - "3000:3000"
