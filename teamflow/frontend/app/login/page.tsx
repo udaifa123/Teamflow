@@ -49,8 +49,7 @@ export default function Login() {
       <div className="absolute bottom-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#5B8DEF]/20 blur-[120px]" />
 
       {/* 🧊 Glass Card */}
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-xl p-8 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
-
+<div className="relative z-10 w-full max-w-md mx-4 sm:mx-0 rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-xl p-6 sm:p-8 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
         <h2 className="text-2xl font-semibold text-white mb-6 text-center">
           Welcome back
         </h2>

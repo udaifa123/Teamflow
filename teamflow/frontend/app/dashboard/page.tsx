@@ -92,6 +92,8 @@ export default function DashboardPage() {
             </div>
 
             <nav className="hidden items-center gap-8 md:flex">
+              {/* Mobile Menu */}
+
               {["Dashboard", "Projects", "Tasks", "Team"].map((item) => (
                 <Link
                   key={item}
@@ -105,6 +107,9 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-4">
+   <button className="md:hidden text-xl text-[#13172A]">
+  ☰
+</button>
             <button className="relative rounded-full border border-black/10 p-2 text-[#5B6270] transition-colors hover:border-[#C9A227] hover:text-[#C9A227]">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -124,8 +129,8 @@ export default function DashboardPage() {
 
       {/* ── Main Content ─────────────────────── */}
       <div className="pt-24 pb-12">
-        <div className="mx-auto max-w-7xl px-6 sm:px-10">
-          {/* Header */}
+<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
+            {/* Header */}
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-2">
@@ -158,8 +163,8 @@ export default function DashboardPage() {
           </div>
 
           {/* ── Stats ───────────── */}
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
+<div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard
               title="Total Projects"
               value={projects.length}
               icon={
@@ -318,8 +323,7 @@ export default function DashboardPage() {
 
           {/* ── Projects ────── */}
           <section className="mt-8 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_10px_rgba(19,23,42,0.05)]">
-            <div className="flex flex-wrap items-center justify-between border-b border-black/[0.06] px-6 py-5">
-              <div>
+<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">              <div>
                 <h2
                   className="text-[18px] font-semibold"
                   style={{ fontFamily: "var(--font-display), serif" }}
@@ -356,8 +360,7 @@ const projectTasks = tasks.filter(
                   return (
                     <div
                       key={project.id}
-                      className="flex flex-wrap items-center justify-between gap-4 px-6 py-5 transition-colors hover:bg-[#F7F4EC]/50"
-                    >
+className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5"                    >
                       <div className="min-w-0 flex-1">
                         <h3 className="font-medium text-[#13172A]">{project.name}</h3>
                         <p className="mt-1 truncate text-[13px] text-[#5B6270]">
@@ -414,7 +417,7 @@ const projectTasks = tasks.filter(
       {/* ── Footer ─────────── */}
       <footer className="border-t border-black/[0.06] bg-[#F7F4EC]">
         <div className="mx-auto max-w-7xl px-6 py-8 sm:px-10">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2.5">
               <IsoMark />
               <span
@@ -475,8 +478,8 @@ function StatCard({
 }) {
   return (
     <div className="group rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_10px_rgba(19,23,42,0.05)] transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-12px_rgba(201,162,39,0.2)]">
-      <div className="flex items-center justify-between">
-        <div
+<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} transition-transform group-hover:scale-110`}
           style={{ color: iconColor }}
         >
