@@ -22,7 +22,7 @@ app.use(
 );
 
 // 👇 ADD THIS LINE (VERY IMPORTANT)
-app.options("*", cors());
+
 
 app.use(express.json());
 
