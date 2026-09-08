@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
 import { apiFetch } from "@/lib/api";
 
@@ -58,13 +58,13 @@ export default function CommentsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [isScrolled, setIsScrolled] = useState(false);
+  // const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // useEffect(() => {
+  //   const handleScroll = () => setIsScrolled(window.scrollY > 20);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
 
   // LOAD COMMENTS, TASKS AND USERS
@@ -271,7 +271,7 @@ export default function CommentsPage() {
       style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
     >
       {/* ── Nav───── */}
-      <header
+      {/* <header
         className={`fixed top-0 z-50 w-full transition-all duration-300 ${
           isScrolled
             ? "border-b border-black/[0.06] bg-[#F7F4EC]/90 backdrop-blur-xl"
@@ -325,7 +325,7 @@ export default function CommentsPage() {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* ── Main Cont── */}
       <div className="pt-24 pb-12">

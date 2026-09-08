@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
 import { apiFetch } from "@/lib/api";
 import { Project, Task, User } from "@/types";
@@ -26,16 +27,16 @@ const mono = IBM_Plex_Mono({
 });
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.clear();
+    router.replace("/login");
+  };
 
   useEffect(() => {
     async function loadDashboard() {
@@ -69,68 +70,21 @@ export default function DashboardPage() {
       className={`${display.variable} ${body.variable} ${mono.variable} min-h-screen bg-[#F7F4EC] text-[#13172A]`}
       style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
     >
-      {/* ── Nav ────── */}
-      <header
-        className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-          isScrolled
-            ? "border-b border-black/[0.06] bg-[#F7F4EC]/90 backdrop-blur-xl"
-            : "border-b border-white/0 bg-transparent"
-        }`}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-10">
-          <div className="flex items-center gap-10">
-            <div className="flex items-center gap-2.5">
-              <IsoMark />
-              <span
-                className={`text-[16px] font-semibold tracking-tight transition-colors ${
-                  isScrolled ? "text-[#13172A]" : "text-[#13172A]"
-                }`}
-                style={{ fontFamily: "var(--font-display), serif" }}
-              >
-                TeamFlow
-              </span>
-            </div>
-
-            <nav className="hidden items-center gap-8 md:flex">
-              {/* Mobile Menu */}
-
-              {["Dashboard", "Projects", "Tasks", "Team"].map((item) => (
-                <Link
-                  key={item}
-                  href={`/${item.toLowerCase()}`}
-                  className="text-[13.5px] font-medium text-[#5B6270] transition-colors hover:text-[#C9A227]"
-                >
-                  {item}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-4">
-   <button className="md:hidden text-xl text-[#13172A]">
-  ☰
-</button>
-            <button className="relative rounded-full border border-black/10 p-2 text-[#5B6270] transition-colors hover:border-[#C9A227] hover:text-[#C9A227]">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#5B8DEF] text-[9px] font-bold text-white">
-                3
-              </span>
-            </button>
-
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#E7C766] to-[#B5871F] text-[12px] font-bold text-[#241A05] ring-2 ring-[#C9A227]/30">
-              JD
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* ── Main Content ─────────────────────── */}
-      <div className="pt-24 pb-12">
-<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
-            {/* Header */}
+      <div className="pt-12 pb-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
+          
+          {/* Logout Button */}
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-sm font-medium rounded-lg border border-red-400 text-red-500 hover:bg-red-500 hover:text-white transition"
+            >
+              Logout
+            </button>
+          </div>
+
+          {/* Header */}
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-2">
@@ -152,19 +106,11 @@ export default function DashboardPage() {
                 Welcome back! Here&apos;s what&apos;s happening with your workspace.
               </p>
             </div>
-
-            {/* <Link
-              href="/projects/new"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#E7C766] to-[#B5871F] px-6 py-3 text-[13.5px] font-semibold text-[#241A05] shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_10px_24px_-8px_rgba(201,162,39,0.65)] transition-all hover:shadow-[0_1px_0_rgba(255,255,255,0.5)_inset,0_14px_30px_-6px_rgba(201,162,39,0.8)] hover:-translate-y-[1px]"
-            >
-              New Project
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link> */}
           </div>
 
           {/* ── Stats ───────────── */}
-<div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-              <StatCard
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
               title="Total Projects"
               value={projects.length}
               icon={
@@ -296,34 +242,13 @@ export default function DashboardPage() {
                   Last 7 days
                 </span>
               </div>
-              {/* <div className="mt-6 space-y-4">
-                {[
-                  { user: "Priya Nair", action: "completed", task: "API rate limiting", time: "2h ago" },
-                  { user: "Arjun Singh", action: "assigned", task: "Mobile app v2", time: "4h ago" },
-                  { user: "Sarah Kim", action: "commented on", task: "Website redesign", time: "6h ago" },
-                  { user: "Mike Rossi", action: "started", task: "Q3 marketing site", time: "8h ago" },
-                ].map((activity, i) => (
-                  <div key={i} className="flex items-center gap-3 border-b border-black/[0.05] pb-3 last:border-0 last:pb-0">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#E7C766] to-[#B5871F] text-[10px] font-bold text-[#241A05]">
-                      {activity.user.split(" ").map((n) => n[0]).join("")}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] text-[#13172A]">
-                        <span className="font-semibold">{activity.user}</span>
-                        <span className="mx-1 text-[#8B8D7A]">{activity.action}</span>
-                        <span className="font-medium text-[#C9A227]">{activity.task}</span>
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-[11px] text-[#8B8D7A]">{activity.time}</span>
-                  </div>
-                ))}
-              </div> */}
             </div>
           </div>
 
           {/* ── Projects ────── */}
           <section className="mt-8 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_10px_rgba(19,23,42,0.05)]">
-<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">              <div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5">
+              <div>
                 <h2
                   className="text-[18px] font-semibold"
                   style={{ fontFamily: "var(--font-display), serif" }}
@@ -352,15 +277,17 @@ export default function DashboardPage() {
                 </p>
               ) : (
                 projects.map((project) => {
-const projectTasks = tasks.filter(
-  (t) => t.project_id === project.id
-);                  const done = projectTasks.filter((t) => t.status?.toLowerCase() === "completed").length;
+                  const projectTasks = tasks.filter(
+                    (t) => t.project_id === project.id
+                  );
+                  const done = projectTasks.filter((t) => t.status?.toLowerCase() === "completed").length;
                   const pct = projectTasks.length > 0 ? Math.round((done / projectTasks.length) * 100) : 0;
 
                   return (
                     <div
                       key={project.id}
-className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5"                    >
+                      className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5"
+                    >
                       <div className="min-w-0 flex-1">
                         <h3 className="font-medium text-[#13172A]">{project.name}</h3>
                         <p className="mt-1 truncate text-[13px] text-[#5B6270]">
@@ -478,8 +405,8 @@ function StatCard({
 }) {
   return (
     <div className="group rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_10px_rgba(19,23,42,0.05)] transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-12px_rgba(201,162,39,0.2)]">
-<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} transition-transform group-hover:scale-110`}
           style={{ color: iconColor }}
         >
