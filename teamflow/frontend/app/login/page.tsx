@@ -33,7 +33,7 @@ export default function Login() {
       localStorage.setItem("token", data.token);
 
       alert("Login Success");
-      router.push("/dashboard");
+      router.replace("/dashboard");
 
     } catch (err) {
       console.error(err);
